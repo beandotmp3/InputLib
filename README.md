@@ -1,6 +1,6 @@
 # InputLib
 
-**InputLib** is a lightweight library for simulating keyboard inputs in .NET applications. I created it because I was tired of the lack of simple solutions when it came to having an app type outside of the console window. All the answers I came across were either long and cluttery, or old and nonfunctional.
+**InputLib** is a lightweight library for simulating keyboard inputs in .NET applications. I created it because I was tired of the lack of simple solutions when it came to having an app type outside of the console window. All the answers I came across were either long and cluttery, or old and nonfunctional. Currently Windows-only.
 
 ## Installation
 
