@@ -30,7 +30,7 @@ Afterward, you can add `using InputLib;` to your `using` statements in your code
 
 ## Usage
 
-Any letter that is a part of the standard english alphanumeric set (A-Z, 1-9) is valid as an input.
+Any letter, symbol, or key that is a part of the US-English keyboard is a valid input.
 
 To simulate a single keypress (pressing A for example):
 
