@@ -16,7 +16,10 @@ public class Input
 
  public static void Press(string key)
  {
-  
+  key = key.ToUpper();
+  byte vK = KeyMap.vKeys[key];
+  keybd_event(vK, 0, EVENT_KEYDOWN, UIntPtr.Zero);
+  keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
  }
  public static void Press(string modifier, string key)
  {
@@ -24,7 +27,6 @@ public class Input
   key = key.ToUpper();
   byte vM = KeyMap.vMods[modifier];
   byte vK = KeyMap.vKeys[key];
-  
   keybd_event(vM, 0, EVENT_KEYDOWN, UIntPtr.Zero);
   keybd_event(vK, 0, EVENT_KEYDOWN, UIntPtr.Zero);
   keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
@@ -32,9 +34,19 @@ public class Input
  }
  public static void Press(string modifier1, string modifier2, string key)
  {
-
+  modifier1 = modifier1.ToUpper();
+  modifier2 = modifier2.ToUpper();
+  key = key.ToUpper();
+  byte vM1 = KeyMap.vMods[modifier1];
+  byte vM2 = KeyMap.vMods[modifier2];
+  byte vK = KeyMap.vMods[key];
+  keybd_event(vM1, 0, EVENT_KEYDOWN, UIntPtr.Zero);
+  keybd_event(vM2, 0, EVENT_KEYDOWN, UIntPtr.Zero);
+  keybd_event(vK, 0, EVENT_KEYDOWN, UIntPtr.Zero);
+  keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
+  keybd_event(vM2, 0, EVENT_KEYUP, UIntPtr.Zero);
+  keybd_event(vM1, 0, EVENT_KEYUP, UIntPtr.Zero);
  }
-
  public static void Space()
  {
   keybd_event(0x20, 0, EVENT_KEYDOWN, UIntPtr.Zero);
