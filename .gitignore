@@ -117,11 +117,6 @@ publish/
 *.vsix
 *.vsidx
 
-DocumentLayout.json
-DocumentLayout.backup.json
-FolderProfile.pubxml
-*.db
-*.v2
 *.bin
 *.sln
 .vs
