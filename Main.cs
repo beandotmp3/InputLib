@@ -17,7 +17,7 @@ public class Input
  public static void Press(string key)
  {
   key = key.ToUpper();
-  byte vK = KeyMap.vKeys[key];
+  byte vK = KeyMap.vKey[key];
   keybd_event(vK, 0, EVENT_KEYDOWN, UIntPtr.Zero);
   keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
  }
@@ -25,8 +25,8 @@ public class Input
  {
   modifier = modifier.ToUpper();
   key = key.ToUpper();
-  byte vM = KeyMap.vMods[modifier];
-  byte vK = KeyMap.vKeys[key];
+  byte vM = KeyMap.vMod[modifier];
+  byte vK = KeyMap.vKey[key];
   keybd_event(vM, 0, EVENT_KEYDOWN, UIntPtr.Zero);
   keybd_event(vK, 0, EVENT_KEYDOWN, UIntPtr.Zero);
   keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
@@ -37,9 +37,9 @@ public class Input
   modifier1 = modifier1.ToUpper();
   modifier2 = modifier2.ToUpper();
   key = key.ToUpper();
-  byte vM1 = KeyMap.vMods[modifier1];
-  byte vM2 = KeyMap.vMods[modifier2];
-  byte vK = KeyMap.vMods[key];
+  byte vM1 = KeyMap.vMod[modifier1];
+  byte vM2 = KeyMap.vMod[modifier2];
+  byte vK = KeyMap.vKey[key];
   keybd_event(vM1, 0, EVENT_KEYDOWN, UIntPtr.Zero);
   keybd_event(vM2, 0, EVENT_KEYDOWN, UIntPtr.Zero);
   keybd_event(vK, 0, EVENT_KEYDOWN, UIntPtr.Zero);
@@ -57,7 +57,7 @@ public class Input
 
 class KeyMap
 {
- public static readonly Dictionary<string, byte> vKeys = new() { 
+ public static readonly Dictionary<string, byte> vKey = new() { 
   {"A", 0x41}, {"B", 0x42}, {"C", 0x43}, {"D", 0x44}, {"E", 0x45}, {"F", 0x46}, {"G", 0x47},
   {"H", 0x48}, {"I", 0x49}, {"J", 0x4A}, {"K", 0x4B}, {"L", 0x4C}, {"M", 0x4D}, {"N", 0x4E},
   {"O", 0x4F}, {"P", 0x50}, {"Q", 0x51}, {"R", 0x52}, {"S", 0x53}, {"T", 0x54}, {"U", 0x55},
@@ -74,7 +74,7 @@ class KeyMap
 
   {"ESCAPE", 0x1B}, {"HOME", 0x24}, {"END", 0x23}, {"INSERT", 0x2D}, {"PAGEUP", 0x21}, {"PAGEDOWN", 0x22}
  };
- public static readonly Dictionary<string, byte> vMods = new() {
+ public static readonly Dictionary<string, byte> vMod = new() {
   {"SHIFT", 0x10}, {"CONTROL", 0x11}, {"ALT", 0x12}, {"WIN", 0x5B}
  };
 }
