@@ -32,13 +32,15 @@ Afterward, you can add `using InputLib;` to your `using` statements in your code
 
 Any letter, symbol, or key that is a part of the US-English keyboard is a valid input.
 
-To simulate a single keypress (pressing A for example):
+Input.Press() is used to send a single key or keybind (up to 3 modifiers):
 
 ```csharp
-Input.Press("A");
+Input.Press("a"); // will print "a" (case-insensitive)
+Input.Press("control", "x"); // will perform Ctrl + X
+Input.Press("control", "shift", "escape"); // will open task manager
 ```
 
-To simulate pressing space:
+Input.Space() is used to simulate pressing space:
 
 ```csharp
 Input.Space();
