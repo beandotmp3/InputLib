@@ -6,9 +6,15 @@
 
 To install, you can either compile it yourself or download a pre-compiled binary from the Releases tab.
 
-If you want to compile yourself, ensure you have the .NET 9.0 SDK installed, then download the source code and unzip the files into an easily accessible directory. After this, open a command prompt window and navigate to whatever directory you unzipped the files to. In this command prompt window, type `dotnet build -c Release` and retrieve the `InputLib.dll` from the `\bin\Release\net9.0\` directory.
+If you want to compile yourself:
+
+1. Ensure you have the .NET 9.0 SDK installed
+2. Download the source code and unzip the files into an easily accessible directory. 
+3. Open a command prompt window and navigate to whatever directory you unzipped the files to. 
+4. In the prompt, type `dotnet build -c Release`
+5. Retrieve the `InputLib.dll` from the `\bin\Release\net9.0\` directory.
 &nbsp;
-&nbsp;
+
 To use, go into your project's `.csproj` and insert the following lines below the `<PropertyGroup>` declaration:
 
 ```xml
