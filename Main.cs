@@ -19,11 +19,11 @@ public class Input
   key = key.ToUpper();
   byte vK = KeyMap.vKey[key];
   if(KeyMap.shftReq.Contains(key))
-   keybd_event(KeyMap.vMod["Shift"], 0, EVENT_KEYDOWN, UIntPtr.Zero);
+   keybd_event(KeyMap.vMod["SHIFT"], 0, EVENT_KEYDOWN, UIntPtr.Zero);
   keybd_event(vK, 0, EVENT_KEYDOWN, UIntPtr.Zero);
   keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
   if(KeyMap.shftReq.Contains(key))
-   keybd_event(KeyMap.vMod["Shift"], 0, EVENT_KEYUP, UIntPtr.Zero);
+   keybd_event(KeyMap.vMod["SHIFT"], 0, EVENT_KEYUP, UIntPtr.Zero);
  }
  public static void Press(string modifier, string key)
  {
