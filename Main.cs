@@ -18,8 +18,12 @@ public class Input
  {
   key = key.ToUpper();
   byte vK = KeyMap.vKey[key];
+  if(KeyMap.shftReq.Contains(key))
+   keybd_event(KeyMap.vMod["Shift"], 0, EVENT_KEYDOWN, UIntPtr.Zero);
   keybd_event(vK, 0, EVENT_KEYDOWN, UIntPtr.Zero);
   keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
+  if(KeyMap.shftReq.Contains(key))
+   keybd_event(KeyMap.vMod["Shift"], 0, EVENT_KEYUP, UIntPtr.Zero);
  }
  public static void Press(string modifier, string key)
  {
@@ -64,8 +68,11 @@ class KeyMap
   {"V", 0x56}, {"W", 0x57}, {"X", 0x58}, {"Y", 0x59}, {"Z", 0x5A},
 
   {"0", 0x30}, {"1", 0x31}, {"2", 0x32}, {"3", 0x33}, {"4", 0x34}, {"5", 0x35}, {"6", 0x36}, {"7", 0x37}, {"8", 0x38}, {"9", 0x39},
-  {";", 0xBA}, {"/", 0xBF},
-  
+  {"!", 0x31}, {"@", 0x32}, {"#", 0x33}, {"$", 0x34}, {"%", 0x35}, {"^", 0x36}, {"&", 0x37}, {"*", 0x38}, {"(", 0x39}, {")", 0x30}, 
+
+  {"`", 0xC0}, {"~", 0xC0}, {"-", 0xBD}, {"_", 0xBD}, {"=", 0xBB}, {"+", 0xBB}, {"[", 0xDB}, {"{", 0xDB}, {"]", 0xDD}, {"}", 0xDD}, {"\\", 0xDC},
+  {"|", 0xDC}, {";", 0xBA}, {":", 0xBA}, {"'", 0xDE}, {"\"", 0xDE}, {",", 0xBC}, {"<", 0xBC}, {".", 0xBE}, {">", 0xBE}, {"/", 0xBF}, {"?", 0xBF},
+
   {"BACKSPACE", 0x08}, {"DELETE", 0x2E}, {"TAB", 0x09}, {"ENTER", 0x0D}, 
   {"ESCAPE", 0x1B}, {"HOME", 0x24}, {"END", 0x23}, {"INSERT", 0x2D}, {"PAGEUP", 0x21}, {"PAGEDOWN", 0x22},
   
@@ -75,4 +82,8 @@ class KeyMap
  public static readonly Dictionary<string, byte> vMod = new() {
   {"SHIFT", 0x10}, {"CONTROL", 0x11}, {"ALT", 0x12}, {"WIN", 0x5B}
  };
+ public static readonly string[] shftReq = [
+  "~", "!", "#", "$", "%", "^", "&", "*", "(", ")",
+  "_", "+", "{", "}", "|", ":", "\"", "<", ">", "?"
+ ];
 }
