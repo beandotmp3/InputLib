@@ -46,6 +46,10 @@ Input.Space() is used to simulate pressing space:
 Input.Space();
 ```
 
+## Planned Changes
+
+- Replace `Press(string key)` and `Space()` with `Type(string input)`
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE)
