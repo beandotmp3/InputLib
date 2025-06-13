@@ -62,6 +62,16 @@ public class Input
   keybd_event(vM2, 0, EVENT_KEYUP, UIntPtr.Zero);
   keybd_event(vM1, 0, EVENT_KEYUP, UIntPtr.Zero);
  }
+ public static void Press(string key, int amount)
+ {
+  key = key.ToUpper();
+  byte vK = KeyMap.vKey[key];
+  for(int i = 0; i < amount; i++)
+  {
+   keybd_event(vK, 0, EVENT_KEYDOWN, UIntPtr.Zero);
+   keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
+  }
+ }
 }
 
 class KeyMap
