@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 namespace InputLib;
 
@@ -6,6 +7,11 @@ public class Input
 {
  [DllImport("user32.dll", SetLastError = true)]
  private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtra);
+ [DllImport("user32.dll")]
+ private static extern bool getcursorpos(out Cursor.POINT lpPoint);
+ [DllImport("user32.dll")]
+ private static extern bool setcursorpos(int x, int y);
+
  private const int EVENT_KEYDOWN = 0x0000;
  private const int EVENT_KEYUP = 0x0002;
 
@@ -76,6 +82,46 @@ public class Input
   keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
   keybd_event(vM2, 0, EVENT_KEYUP, UIntPtr.Zero);
   keybd_event(vM1, 0, EVENT_KEYUP, UIntPtr.Zero);
+ } 
+ public class Cursor
+ {
+  public struct POINT
+  {
+   public int X;
+   public int Y;
+  }
+
+  public static void GoTo(int x, int y, bool smooth = false, int durationMs = 1000)
+  {
+   if(smooth)
+   {
+    getcursorpos(out POINT start);
+    int startX = start.X;
+    int startY = start.Y;
+    int steps = durationMs / 10;
+    int delay = durationMs / steps;
+    for(int i = 0; i <= steps; i++)
+    {
+     int newX = startX + (int)((x - startX) * (i / (float)steps));
+     int newY = startY + (int)((y - startY) * (i / (float)steps));
+     setcursorpos(newX, newY);
+     Thread.Sleep(delay);
+    }
+   }
+   else
+   {
+    setcursorpos(x, y);
+    Thread.Sleep(15);
+   }
+  }
+  public static void LClick()
+  {
+
+  }
+  public static void RClick()
+  {
+
+  }
  }
 }
 
