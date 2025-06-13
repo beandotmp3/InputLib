@@ -25,8 +25,10 @@ public class Input
    else if(char.IsUpper(c) || KeyMap.shftReq.Contains(key))
    {
     keybd_event(KeyMap.vMod["SHIFT"], 0, EVENT_KEYDOWN, UIntPtr.Zero);
+    Thread.Sleep(10);
     keybd_event(vK, 0, EVENT_KEYDOWN, UIntPtr.Zero);
     keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
+    Thread.Sleep(10);
     keybd_event(KeyMap.vMod["SHIFT"], 0, EVENT_KEYUP, UIntPtr.Zero);
     Thread.Sleep(25);
    }
