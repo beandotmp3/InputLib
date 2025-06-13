@@ -20,7 +20,7 @@ public class Input
    {
     keybd_event(vK, 0, EVENT_KEYDOWN, UIntPtr.Zero);
     keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
-    Thread.Sleep(15);
+    Thread.Sleep(25);
    }
    else if(char.IsUpper(c) || KeyMap.shftReq.Contains(key))
    {
@@ -28,14 +28,25 @@ public class Input
     keybd_event(vK, 0, EVENT_KEYDOWN, UIntPtr.Zero);
     keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
     keybd_event(KeyMap.vMod["SHIFT"], 0, EVENT_KEYUP, UIntPtr.Zero);
-    Thread.Sleep(10);
+    Thread.Sleep(25);
    }
    else
    {
     keybd_event(vK, 0, EVENT_KEYDOWN, UIntPtr.Zero);
     keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
-    Thread.Sleep(10);
+    Thread.Sleep(25);
    }
+  }
+ }
+
+ public static void Press(string key, int amount)
+ {
+  key = key.ToUpper();
+  byte vK = KeyMap.vKey[key];
+  for(int i = 0; i < amount; i++)
+  {
+   keybd_event(vK, 0, EVENT_KEYDOWN, UIntPtr.Zero);
+   keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
   }
  }
  public static void Press(string modifier, string key)
@@ -64,16 +75,6 @@ public class Input
   keybd_event(vM2, 0, EVENT_KEYUP, UIntPtr.Zero);
   keybd_event(vM1, 0, EVENT_KEYUP, UIntPtr.Zero);
  }
- public static void Press(string key, int amount)
- {
-  key = key.ToUpper();
-  byte vK = KeyMap.vKey[key];
-  for(int i = 0; i < amount; i++)
-  {
-   keybd_event(vK, 0, EVENT_KEYDOWN, UIntPtr.Zero);
-   keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
-  }
- }
 }
 
 class KeyMap
@@ -92,7 +93,7 @@ class KeyMap
 
   {" ", 0x20}, {"SPACE", 0x20}, {"BACKSPACE", 0x08}, {"DELETE", 0x2E}, {"TAB", 0x09}, {"ENTER", 0x0D},
   {"ESCAPE", 0x1B}, {"HOME", 0x24}, {"END", 0x23}, {"INSERT", 0x2D}, {"PAGEUP", 0x21}, {"PAGEDOWN", 0x22},
-  {"LEFT", 0x25}, {"UP", 0x26}, {"RIGHT", 0x27}, {"DOWN", 0x28},
+  {"LEFT", 0x25}, {"UP", 0x26}, {"RIGHT", 0x27}, {"DOWN", 0x28}, {"WIN", 0x5B},
   
   {"F1", 0x70}, {"F2", 0x71}, {"F3", 0x72}, {"F4", 0x73}, {"F5", 0x74}, {"F6", 0x75},
   {"F7", 0x76}, {"F8", 0x77}, {"F9", 0x78}, {"F10", 0x79}, {"F11", 0x7A}, {"F12", 0x7B},
@@ -101,7 +102,7 @@ class KeyMap
   {"SHIFT", 0x10}, {"CONTROL", 0x11}, {"ALT", 0x12}, {"WIN", 0x5B}
  };
  public static readonly string[] shftReq = [
-  "~", "!", "#", "$", "%", "^", "&", "*", "(", ")",
+  "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")",
   "_", "+", "{", "}", "|", ":", "\"", "<", ">", "?"
  ];
 }
