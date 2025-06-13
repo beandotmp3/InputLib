@@ -18,8 +18,9 @@ public class Input
    byte vK = KeyMap.vKey[key];
    if(c == ' ')
    {
-    keybd_event(0x20, 0, EVENT_KEYDOWN, UIntPtr.Zero);
-    keybd_event(0x20, 0, EVENT_KEYUP, UIntPtr.Zero);
+    vK = KeyMap.vKey["SPACE"];
+    keybd_event(vK, 0, EVENT_KEYDOWN, UIntPtr.Zero);
+    keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
     Thread.Sleep(15);
    }
    else if(char.IsUpper(c) || KeyMap.shftReq.Contains(key))
@@ -28,11 +29,13 @@ public class Input
     keybd_event(vK, 0, EVENT_KEYDOWN, UIntPtr.Zero);
     keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
     keybd_event(KeyMap.vMod["SHIFT"], 0, EVENT_KEYUP, UIntPtr.Zero);
+    Thread.Sleep(10);
    }
    else
    {
     keybd_event(vK, 0, EVENT_KEYDOWN, UIntPtr.Zero);
     keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
+    Thread.Sleep(10);
    }
   }
  }
@@ -88,7 +91,7 @@ class KeyMap
   {"`", 0xC0}, {"~", 0xC0}, {"-", 0xBD}, {"_", 0xBD}, {"=", 0xBB}, {"+", 0xBB}, {"[", 0xDB}, {"{", 0xDB}, {"]", 0xDD}, {"}", 0xDD}, {"\\", 0xDC},
   {"|", 0xDC}, {";", 0xBA}, {":", 0xBA}, {"'", 0xDE}, {"\"", 0xDE}, {",", 0xBC}, {"<", 0xBC}, {".", 0xBE}, {">", 0xBE}, {"/", 0xBF}, {"?", 0xBF},
 
-  {"BACKSPACE", 0x08}, {"DELETE", 0x2E}, {"TAB", 0x09}, {"ENTER", 0x0D},
+  {"SPACE", 0x20}, {"BACKSPACE", 0x08}, {"DELETE", 0x2E}, {"TAB", 0x09}, {"ENTER", 0x0D},
   {"ESCAPE", 0x1B}, {"HOME", 0x24}, {"END", 0x23}, {"INSERT", 0x2D}, {"PAGEUP", 0x21}, {"PAGEDOWN", 0x22},
   {"LEFT", 0x25}, {"UP", 0x26}, {"RIGHT", 0x27}, {"DOWN", 0x28},
   
