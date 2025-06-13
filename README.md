@@ -9,18 +9,17 @@ To install, you can either compile it yourself or download a pre-compiled binary
 If you want to compile yourself:
 
 1. Ensure you have the .NET 9.0 SDK installed
-2. Download the source code and unzip the files into an easily accessible directory. 
-3. Open a command prompt window and navigate to whatever directory you unzipped the files to. 
+2. Download the source code and unzip the files into an easily accessible directory.
+3. Open a command prompt window and navigate to whatever directory you unzipped the files to.
 4. In the prompt, type `dotnet build -c Release`
 5. Retrieve the `InputLib.dll` from the `\bin\Release\net9.0\` directory.
-&nbsp;
 
 To use, go into your project's `.csproj` and insert the following lines below the `<PropertyGroup>` declaration:
 
 ```xml
 <ItemGroup>
  <Reference Include="InputLib">
-  <HintPath>(Path to InputLib.dll)</HintPath>
+  <HintPath>C:\Path\To\InputLib.dll</HintPath>
   <Private>True</Private>
  </Reference>
 </ItemGroup>
@@ -32,23 +31,21 @@ Afterward, you can add `using InputLib;` to your `using` statements in your code
 
 Any letter, symbol, or key that is a part of the US-English keyboard is a valid input.
 
-Input.Press() is used to send a single key or keybind (up to 3 modifiers):
+Input.Type() is used to type a string of characters. It will output *exactly* what is provided, so it is case-sensitive:
 
 ```csharp
-Input.Press("a"); // will print "a" (case-insensitive)
+Input.Type("This is an example sentence.") 
+```
+
+Input.Press() is used to send a keybind (up to 2 modifiers) or repeatedly press a key (such as to navigate with Tab):
+
+```csharp
+Input.Press("a", 3) // will type "aaa", case-insensitive
 Input.Press("control", "x"); // will perform Ctrl + X
 Input.Press("control", "shift", "escape"); // will open task manager
 ```
 
-Input.Space() is used to simulate pressing space:
-
-```csharp
-Input.Space();
-```
-
-## Planned Changes
-
-- Replace `Press(string key)` and `Space()` with `Type(string input)`
+If you plan to have a series of commands, such as to do a long list of things using just keybinds, I would suggest to create a new class under the same namespace of your project and make methods for each of the series as to not clutter your important parts. Also, if you plan to interact with other applications, I would implement `Thread.Sleep(500)` every other line so any loading doesn't mess up your inputs.
 
 ## License
 
