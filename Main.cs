@@ -126,6 +126,12 @@ public class Input
    keybd_event(0x02, 0, EVENT_KEYUP, UIntPtr.Zero);
    Thread.Sleep(15);
   }
+  public static void MClick()
+  {
+   keybd_event(0x04, 0, EVENT_KEYDOWN, UIntPtr.Zero);
+   keybd_event(0x04, 0, EVENT_KEYUP, UIntPtr.Zero);
+   Thread.Sleep(15);
+  }
  }
 }
 
