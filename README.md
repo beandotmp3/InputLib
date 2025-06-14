@@ -31,13 +31,13 @@ Afterward, you can add `using InputLib;` to your `using` statements in your code
 
 Any letter, symbol, or key that is a part of the US-English keyboard is a valid input.
 
-Input.Type() is used to type a string of characters. It will output *exactly* what is provided, so it is case-sensitive:
+`Input.Type()` is used to type a string of characters. It will output *exactly* what is provided, so it is case-sensitive:
 
 ```csharp
 Input.Type("This is an example sentence.") 
 ```
 
-Input.Press() is used to send a keybind (up to 2 modifiers) or repeatedly press a key (such as to navigate with Tab):
+`Input.Press()` is used to send a keybind (up to 2 modifiers) or repeatedly press a key (such as to navigate with Tab):
 
 ```csharp
 Input.Press("a", 3) // will type "aaa", case-insensitive
@@ -45,7 +45,21 @@ Input.Press("control", "x"); // will perform Ctrl + X
 Input.Press("control", "shift", "escape"); // will open task manager
 ```
 
-If you plan to have a series of commands, such as to do a long list of things using just keybinds, I would suggest to create a new class under the same namespace of your project and make methods for each of the series as to not clutter your important parts. Also, if you plan to interact with other applications, I would implement `Thread.Sleep(500)` every other line so any loading doesn't mess up your inputs.
+`Input.Cursor.GoTo()` is used to move the mouse to specific coordinates on the screen. X0 Y0 is considered the top-left corner of the primary monitor:
+
+```csharp
+Input.Cursor.GoTo(0, 0); // moves the cursor to the top left of the screen
+Input.Cursor.GoTo(1920, 1080, true); // then to the bottom right of the screen in a fluid motion
+```
+
+`Input.Cursor.LClick`, `Input.Cursor.RClick`, and `Input.Cursor.MClick` will perform left-, right-, and middle-click respectivly:
+
+```csharp
+Input.Cursor.GoTo(1890, 20); // moves the cursor to the close window button
+Input.Cursor.LClick(); // clicks the button
+```
+
+If you plan to have a series of commands, such as to do a long list of things using just keybinds, I would suggest to create a new class in your project to hold the logic for that. If you also plan to interact with other applications, I would implement `Thread.Sleep(500)` every other line so any loading doesn't mess up your inputs.
 
 ## License
 
