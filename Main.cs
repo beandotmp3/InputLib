@@ -82,7 +82,15 @@ public class Input
   keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
   keybd_event(vM2, 0, EVENT_KEYUP, UIntPtr.Zero);
   keybd_event(vM1, 0, EVENT_KEYUP, UIntPtr.Zero);
- } 
+ }
+ public static void Hold(string key, int timeMs)
+ {
+  key = key.ToUpper();
+  byte vK = KeyMap.vKey[key];
+  keybd_event(vK, 0, EVENT_KEYDOWN, UIntPtr.Zero);
+  Thread.Sleep(timeMs);
+  keybd_event(vK, 0, EVENT_KEYUP, UIntPtr.Zero);
+ }
  public class Cursor
  {
   public struct POINT
