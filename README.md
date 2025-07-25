@@ -34,15 +34,21 @@ Any letter, symbol, or key that is a part of the US-English keyboard is a valid 
 `Input.Type()` is used to type a string of characters. It will output *exactly* what is provided, so it is case-sensitive:
 
 ```csharp
-Input.Type("This is an example sentence.") 
+Input.Type("This is an example sentence.");
 ```
 
 `Input.Press()` is used to send a keybind (up to 2 modifiers) or repeatedly press a key (such as to navigate with Tab):
 
 ```csharp
-Input.Press("a", 3) // will type "aaa", case-insensitive
+Input.Press("a", 3); // will type "aaa", case-insensitive
 Input.Press("control", "x"); // will perform Ctrl + X
 Input.Press("control", "shift", "escape"); // will open task manager
+```
+
+`Input.Hold()` is used to hold a key down for a specific amount of time (in milliseconds):
+
+```csharp
+Input.Hold("h", 1000); // will hold "h" for 1000ms (1 second)
 ```
 
 `Input.Cursor.GoTo()` is used to move the mouse to specific coordinates on the screen. X0 Y0 is considered the top-left corner of the primary monitor:
