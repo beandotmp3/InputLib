@@ -28,6 +28,7 @@ static const vKey keymap[] = {
  {"F1", 0x70}, {"F2", 0x71}, {"F3", 0x72}, {"F4", 0x73}, {"F5", 0x74}, {"F6", 0x75},
  {"F7", 0x76}, {"F8", 0x77}, {"F9", 0x78}, {"F10", 0x79}, {"F11", 0x7A}, {"F12", 0x7B}
 };
+static const char* shift_req = "~!@#$%^&*()_+{}|:\"<>?";
 static BYTE find_vk(const char* key) {
  if(!key) return 0;
  for(size_t i = 0; i < sizeof(keymap)/sizeof(keymap[0]); ++i) {
@@ -45,5 +46,23 @@ int INPUTLIB_CALL key_press(const char* key) {
  }
  keybd_event(vk, 0, 0, 0);
  keybd_event(vk, 0, KEYEVENTF_KEYUP, 0);
+ return 0;
+}
+int INPUTLIB_CALL key_type(const char* text) {
+ if(!text) return 1;
+ size_t len = strlen(text);
+ for(size_t i = 0; i < len; ++i) {
+  char c = text[i];
+  char s[2] = {0};
+  s[0] = (char)toupper((unsigned char)c);
+  BYTE vk = find_vk(s);
+  if(!vk) continue;
+  BOOL need_shift = isupper((unsigned char)c) || strchr(shift_req, c) != NULL;
+  if(need_shift) keybd_event(VK_SHIFT, 0, 0, 0);
+  keybd_event(vk, 0, 0, 0);
+  keybd_event(vk, 0, KEYEVENTF_KEYUP, 0);
+  if(need_shift) keybd_event(VK_SHIFT, 0, KEYEVENTF_KEYUP, 0);
+  input_sleep(25);
+ }
  return 0;
 }
