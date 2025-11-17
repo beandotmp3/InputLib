@@ -37,7 +37,7 @@ static BYTE find_vk(const char* key) {
  return 0;
 }
 
-__declspec(dllexport) int __cdecl key_press(const char* key) {
+int INPUTLIB_CALL key_press(const char* key) {
  BYTE vk = find_vk(key);
  if(!vk) {
   SetLastError(ERROR_INVALID_PARAMETER);

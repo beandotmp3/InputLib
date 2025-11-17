@@ -6,14 +6,14 @@
 
 static __thread DWORD last_err_code = 0;
 
-__declspec(dllexport) int __cdecl input_init(void) {
+int INPUTLIB_CALL input_init(void) {
  last_err_code = 0;
  return 0;
 }
-__declspec(dllexport) void __cdecl input_sleep(int ms) {
+void INPUTLIB_CALL input_sleep(int ms) {
  Sleep(ms);
 }
-__declspec(dllexport) void __cdecl input_gle(char* buffer, size_t len) {
+void INPUTLIB_CALL input_gle(char* buffer, size_t len) {
  if(!buffer || len == 0) return;
  DWORD err = GetLastError();
  last_err_code = err;
