@@ -24,6 +24,8 @@ INPUTLIB_API void INPUTLIB_CALL input_gle(char* buffer, size_t len);
 
 INPUTLIB_API int INPUTLIB_CALL key_press(const char* key);
 INPUTLIB_API int INPUTLIB_CALL key_pressn(const char* key, int amount);
+INPUTLIB_API int INPUTLIB_CALL key_pressmod(const char* mod, const char* key);
+INPUTLIB_API int INPUTLIB_CALL key_pressmod2(const char* mod1, const char* mod2, const char* key);
 INPUTLIB_API int INPUTLIB_CALL key_type(const char* text);
 
 #ifdef __cplusplus
