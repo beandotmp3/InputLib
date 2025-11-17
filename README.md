@@ -43,7 +43,19 @@ key_press("a")
 key_pressn("a", 3)
  ```
 
- `key_type` simulates typing the given string.
+ `key_pressmod` simulates a keypress with a modifier.
+
+ ```c
+key_pressmod("control", "x");
+ ```
+
+ `key_pressmod2` simulates a keypress with 2 modifiers
+
+ ```c
+key_pressmod2("control", "shift", "escape");
+ ```
+
+ `key_type` simulates typing the given string, case-sensitive.
 
  ```c
 key_type("Hello, World!")

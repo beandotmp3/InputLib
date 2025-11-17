@@ -59,6 +59,37 @@ int INPUTLIB_CALL key_pressn(const char* key, int amount) {
  }
  return 0;
 }
+int INPUTLIB_CALL key_pressmod(const char* mod, const char* key) {
+ if(!mod || !key) return 1;
+ BYTE vk = find_vk(key);
+ BYTE vm = find_vk(mod);
+ if(!vk || !vm) return 1;
+ keybd_event(vm, 0, 0, 0);
+ input_sleep(5);
+ keybd_event(vk, 0, 0, 0);
+ keybd_event(vk, 0, KEYEVENTF_KEYUP, 0);
+ input_sleep(5);
+ keybd_event(vm, 0, KEYEVENTF_KEYUP, 0);
+ return 0;
+}
+int INPUTLIB_CALL key_pressmod2(const char* mod1, const char* mod2, const char* key) {
+ if(!mod1 || !mod2 || !key) return 1;
+ BYTE vk = find_vk(key);
+ BYTE vm1 = find_vk(mod1);
+ BYTE vm2 = find_vk(mod2);
+ if(!vk || !vm1 || !vm2) return 1;
+ keybd_event(vm1, 0, 0, 0);
+ input_sleep(5);
+ keybd_event(vm2, 0, 0, 0);
+ input_sleep(5);
+ keybd_event(vk, 0, 0, 0);
+ keybd_event(vk, 0, KEYEVENTF_KEYUP, 0);
+ input_sleep(5);
+ keybd_event(vm2, 0, KEYEVENTF_KEYUP, 0);
+ input_sleep(5);
+ keybd_event(vm1, 0, KEYEVENTF_KEYUP, 0);
+ return 0;
+}
 int INPUTLIB_CALL key_type(const char* text) {
  if(!text) return 1;
  size_t len = strlen(text);
