@@ -37,6 +37,18 @@ input_gle(tmp, sizeof(tmp));
 key_press("a")
  ```
 
+ `key_pressn` simulates multiple keypresses of the same key.
+
+ ```c
+key_pressn("a", 3)
+ ```
+
+ `key_type` simulates typing the given string.
+
+ ```c
+key_type("Hello, World!")
+ ```
+
 </details>
 
 ## License
