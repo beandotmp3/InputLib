@@ -48,6 +48,17 @@ int INPUTLIB_CALL key_press(const char* key) {
  keybd_event(vk, 0, KEYEVENTF_KEYUP, 0);
  return 0;
 }
+int INPUTLIB_CALL key_pressn(const char* key, int amount) {
+ if(!key || amount <= 0) return 1;
+ BYTE vk = find_vk(key);
+ if(!vk) return 1;
+ for(int i = 0; i < amount; ++i) {
+  keybd_event(vk, 0, 0, 0);
+  keybd_event(vk, 0, KEYEVENTF_KEYUP, 0);
+  input_sleep(10);
+ }
+ return 0;
+}
 int INPUTLIB_CALL key_type(const char* text) {
  if(!text) return 1;
  size_t len = strlen(text);
