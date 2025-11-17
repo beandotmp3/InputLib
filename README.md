@@ -55,6 +55,12 @@ key_pressmod("control", "x");
 key_pressmod2("control", "shift", "escape");
  ```
 
+ `key_hold` simulates holding the given key for a certain amount of milliseconds.
+
+ ```c
+key_hold("a", 1500);
+ ```
+
  `key_type` simulates typing the given string, case-sensitive.
 
  ```c

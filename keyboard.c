@@ -90,6 +90,15 @@ int INPUTLIB_CALL key_pressmod2(const char* mod1, const char* mod2, const char* 
  keybd_event(vm1, 0, KEYEVENTF_KEYUP, 0);
  return 0;
 }
+int INPUTLIB_CALL key_hold(const char* key, int duration_ms) {
+ if(!key || duration_ms < 0) return 1;
+ BYTE vk = find_vk(key);
+ if(!vk) return 1;
+ keybd_event(vk, 0, 0, 0);
+ if(duration_ms > 0) input_sleep(duration_ms);
+ keybd_event(vk, 0, KEYEVENTF_KEYUP, 0);
+ return 0;
+}
 int INPUTLIB_CALL key_type(const char* text) {
  if(!text) return 1;
  size_t len = strlen(text);
