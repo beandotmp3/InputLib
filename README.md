@@ -73,7 +73,7 @@ key_type("Hello, World!");
 <details>
  <summary>Cursor</summary>
 
- `cursor_lclick`, `cursor_rclick`, and `cursor_mclick` simulate the left, right, and middle click on the mouse;
+ `cursor_lclick`, `cursor_rclick`, and `cursor_mclick` simulate the left, right, and middle click on the mouse. Does not work currently.
 
  `cursor_moveto` moves the cursor from the current location to the x and y coordinates given. X0 Y0 is considered the top-left corner of the primary monitor.
 
