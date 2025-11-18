@@ -73,7 +73,13 @@ key_type("Hello, World!");
 <details>
  <summary>Cursor</summary>
 
- `cursor_lclick`, `cursor_rclick`, and `cursor_mclick` simulate the left, right, and middle click on the mouse;
+ `cursor_lclick`, `cursor_rclick`, and `cursor_mclick` simulates the left, right, and middle click on the mouse;
+
+ `cursor_scroll` simulates scrolling the mouse wheel. Positive is up, negative is down, with each unit being 1 wheel delta.
+
+ ```c
+cursor_scroll(-120);
+ ```
 
  `cursor_moveto` moves the cursor from the current location to the x and y coordinates given. X0 Y0 is considered the top-left corner of the primary monitor.
 
@@ -90,7 +96,7 @@ cursor_movetos(960, 540, 1000);
  `cursor_movetor` moves the cursor from the current location to the x and y relative to the starting position.
 
  ```c
-cursor_movetor(-200, 400);
+cursor_movetor(-200, 400);s
  ```
 
 </details>

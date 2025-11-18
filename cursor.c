@@ -21,6 +21,10 @@ int INPUTLIB_CALL cursor_moveto(int x, int y) {
  if(!SetCursorPos(x, y)) return 1;
  return 0;
 }
+int INPUTLIB_CALL cursor_scroll(int amount) {
+ mouse_event(MOUSEEVENTF_WHEEL, 0, 0, amount * WHEEL_DELTA, 0);
+ return 0;
+}
 int INPUTLIB_CALL cursor_movetos(int x, int y, int duration_ms) {
  POINT p;
  if(!GetCursorPos(&p)) return 1;
