@@ -29,6 +29,12 @@ INPUTLIB_API int INPUTLIB_CALL key_pressmod2(const char* mod1, const char* mod2,
 INPUTLIB_API int INPUTLIB_CALL key_hold(const char* key, int duration_ms);
 INPUTLIB_API int INPUTLIB_CALL key_type(const char* text);
 
+INPUTLIB_API int INPUTLIB_CALL cursor_lclick(void);
+INPUTLIB_API int INPUTLIB_CALL cursor_rclick(void);
+INPUTLIB_API int INPUTLIB_CALL cursor_mclick(void);
+INPUTLIB_API int INPUTLIB_CALL cursor_moveto(int x, int y);
+INPUTLIB_API int INPUTLIB_CALL cursor_movetos(int x, int y, int duration_ms);
+
 #ifdef __cplusplus
 }
 #endif

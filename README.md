@@ -9,7 +9,7 @@ This is a list of functions you can import from the .dll, formatted for C.
 <details>
  <summary>Utility</summary>
 
- `input_init` sets up internal hooks and subsystems. Add to the initialization phase of your code. *(Currently a stub)*.
+ `input_init` sets up internal hooks and subsystems. Add to the initialization phase of your code.
 
  ```c
 input_init();
@@ -28,19 +28,20 @@ input_gle(tmp, sizeof(tmp));
  ```
 
 </details>
+
 <details>
  <summary>Keyboard</summary>
 
  `key_press` simulates a single keypress.
 
  ```c
-key_press("a")
+key_press("a");
  ```
 
  `key_pressn` simulates multiple keypresses of the same key.
 
  ```c
-key_pressn("a", 3)
+key_pressn("a", 3);
  ```
 
  `key_pressmod` simulates a keypress with a modifier.
@@ -64,7 +65,26 @@ key_hold("a", 1500);
  `key_type` simulates typing the given string, case-sensitive.
 
  ```c
-key_type("Hello, World!")
+key_type("Hello, World!");
+ ```
+
+</details>
+
+<details>
+ <summary>Cursor</summary>
+
+ `cursor_lclick`, `cursor_rclick`, and `cursor_mclick` simulate the left, right, and middle click on the mouse;
+
+ `cursor_moveto` moves the cursor from the current location to the x and y coordinates given. X0 Y0 is considered the top-left corner of the primary monitor.
+
+ ```c
+cursor_moveto(960, 540);
+ ```
+
+ `cursor_movetos` moves the cursor smoothly from the current location to the x and y coordinates given.
+
+ ```c
+cursor_movetos(960, 540, 1000);
  ```
 
 </details>

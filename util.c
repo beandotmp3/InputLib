@@ -8,6 +8,7 @@ static __thread DWORD last_err_code = 0;
 
 int INPUTLIB_CALL input_init(void) {
  last_err_code = 0;
+ SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
  return 0;
 }
 void INPUTLIB_CALL input_sleep(int ms) {
