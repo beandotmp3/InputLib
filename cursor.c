@@ -41,3 +41,8 @@ int INPUTLIB_CALL cursor_movetos(int x, int y, int duration_ms) {
  }
  return 0;
 }
+int INPUTLIB_CALL cursor_movetor(int x, int y) {
+ POINT p;
+ if(!GetCursorPos(&p)) return 1;
+ return cursor_moveto(p.x + x, p.y + y);
+}

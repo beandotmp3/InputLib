@@ -34,6 +34,7 @@ INPUTLIB_API int INPUTLIB_CALL cursor_rclick(void);
 INPUTLIB_API int INPUTLIB_CALL cursor_mclick(void);
 INPUTLIB_API int INPUTLIB_CALL cursor_moveto(int x, int y);
 INPUTLIB_API int INPUTLIB_CALL cursor_movetos(int x, int y, int duration_ms);
+INPUTLIB_API int INPUTLIB_CALL cursor_movetor(int x, int y);
 
 #ifdef __cplusplus
 }

@@ -87,6 +87,12 @@ cursor_moveto(960, 540);
 cursor_movetos(960, 540, 1000);
  ```
 
+ `cursor_movetor` moves the cursor from the current location to the x and y relative to the starting position.
+
+ ```c
+cursor_movetor(-200, 400);
+ ```
+
 </details>
 
 ## License
