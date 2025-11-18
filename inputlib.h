@@ -37,6 +37,9 @@ INPUTLIB_API int INPUTLIB_CALL cursor_moveto(int x, int y);
 INPUTLIB_API int INPUTLIB_CALL cursor_movetos(int x, int y, int duration_ms);
 INPUTLIB_API int INPUTLIB_CALL cursor_movetor(int x, int y);
 
+INPUTLIB_API int INPUTLIB_CALL window_getactive(char* title_out, size_t title_len);
+INPUTLIB_API int INPUTLIB_CALL windows_setactive(const char* title);
+
 #ifdef __cplusplus
 }
 #endif

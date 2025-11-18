@@ -24,7 +24,7 @@ input_sleep(1000);
  `input_gle` retrieves the last WinAPI error message (thread-local). `buffer` must have space for `len` characters
 
  ```c
-input_gle(tmp, sizeof(tmp));
+input_gle(buf, sizeof(buf));
  ```
 
 </details>
@@ -96,7 +96,24 @@ cursor_movetos(960, 540, 1000);
  `cursor_movetor` moves the cursor from the current location to the x and y relative to the starting position.
 
  ```c
-cursor_movetor(-200, 400);s
+cursor_movetor(-200, 400);
+ ```
+
+</details>
+
+<details>
+ <summary>Window</summary>
+
+ `window_getactive` retrieves the name of the current top window.
+
+ ```c
+window_getactive(buf, sizeof(buf));
+ ```
+
+ `window_setactive` sets the window with the given name as the active window.
+
+ ```c
+window_setactive("title");
  ```
 
 </details>
