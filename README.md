@@ -116,6 +116,8 @@ window_getactive(buf, sizeof(buf));
 window_setactive("title");
  ```
 
+ `window_maximize`, `window_minimize`, and `window_close` maximizes, minimizes, and closes the window with the given title.
+
 </details>
 
 ## License

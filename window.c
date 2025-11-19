@@ -33,3 +33,21 @@ int INPUTLIB_CALL window_setactive(const char* title) {
  if(!SetForegroundWindow(hwnd)) return 1;
  return 0;
 }
+int INPUTLIB_CALL window_maximize(const char* title) {
+ HWND hwnd = find_by_title(title);
+ if(!hwnd) return 1;
+ if(!ShowWindow(hwnd, SW_MAXIMIZE)) return 1;
+ return 0;
+}
+int INPUTLIB_CALL window_minimize(const char* title) {
+ HWND hwnd = find_by_title(title);
+ if(!hwnd) return 1;
+ if(!ShowWindow(hwnd, SW_MINIMIZE)) return 1;
+ return 0;
+}
+int INPUTLIB_CALL window_close(const char* title) {
+ HWND hwnd = find_by_title(title);
+ if(!hwnd) return 1;
+ if(!PostMessageA(hwnd, WM_CLOSE, 0, 0)) return 1;
+ return 0;
+}
