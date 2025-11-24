@@ -3,18 +3,18 @@
 #include "inputlib.h"
 
 int INPUTLIB_CALL cursor_lclick(void) {
- keybd_event(VK_LBUTTON, 0, 0, 0);
- keybd_event(VK_LBUTTON, 0, KEYEVENTF_KEYUP, 0);
+ mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+ mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
  return 0;
 }
 int INPUTLIB_CALL cursor_rclick(void) {
- keybd_event(VK_RBUTTON, 0, 0, 0);
- keybd_event(VK_RBUTTON, 0, KEYEVENTF_KEYUP, 0);
+ mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
+ mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
  return 0;
 }
 int INPUTLIB_CALL cursor_mclick(void) {
- keybd_event(VK_MBUTTON, 0, 0, 0);
- keybd_event(VK_MBUTTON, 0, KEYEVENTF_KEYUP, 0);
+ mouse_event(MOUSEEVENTF_MIDDLEDOWN, 0, 0, 0, 0);
+ mouse_event(MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0);
  return 0;
 }
 int INPUTLIB_CALL cursor_moveto(int x, int y) {
