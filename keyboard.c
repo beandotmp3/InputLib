@@ -59,7 +59,7 @@ int INPUTLIB_CALL key_pressn(const char* key, int amount) {
  }
  return 0;
 }
-int INPUTLIB_CALL key_pressmod(const char* mod, const char* key) {
+int INPUTLIB_CALL key_pressm(const char* mod, const char* key) {
  if(!mod || !key) return 1;
  BYTE vk = find_vk(key);
  BYTE vm = find_vk(mod);
@@ -72,7 +72,7 @@ int INPUTLIB_CALL key_pressmod(const char* mod, const char* key) {
  keybd_event(vm, 0, KEYEVENTF_KEYUP, 0);
  return 0;
 }
-int INPUTLIB_CALL key_pressmod2(const char* mod1, const char* mod2, const char* key) {
+int INPUTLIB_CALL key_pressmt(const char* mod1, const char* mod2, const char* key) {
  if(!mod1 || !mod2 || !key) return 1;
  BYTE vk = find_vk(key);
  BYTE vm1 = find_vk(mod1);
@@ -115,5 +115,13 @@ int INPUTLIB_CALL key_type(const char* text) {
   if(need_shift) keybd_event(VK_SHIFT, 0, KEYEVENTF_KEYUP, 0);
   input_sleep(25);
  }
+ return 0;
+}
+int INPUTLIB_CALL key_isdown(const char* key) {
+ if(!key) return -1;
+ BYTE vk = find_vk(key);
+ if(!vk) return -1;
+ SHORT state = GetAsyncKeyState(vk);
+ if(state & 0x8000) return 1;
  return 0;
 }
