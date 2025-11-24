@@ -33,6 +33,19 @@ int INPUTLIB_CALL window_setactive(const char* title) {
  if(!SetForegroundWindow(hwnd)) return 1;
  return 0;
 }
+int INPUTLIB_CALL window_getrect(const char* title, int* x, int* y, int* w, int* h) {
+ if(!title || !x || !y || !w || !h) return 1;
+ HWND hwnd = find_by_title(title);
+ if(!hwnd) return 1;
+ RECT r;
+ if(!GetWindowRect(hwnd, &r)) return 1;
+ *x = r.left;
+ *y = r.top;
+ *w = r.right - r.left;
+ *h = r.bottom - r.top;
+ return 0;
+}
+
 int INPUTLIB_CALL window_maximize(const char* title) {
  HWND hwnd = find_by_title(title);
  if(!hwnd) return 1;

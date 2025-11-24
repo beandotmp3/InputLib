@@ -39,6 +39,7 @@ INPUTLIB_API int INPUTLIB_CALL cursor_movetor(int x, int y);
 
 INPUTLIB_API int INPUTLIB_CALL window_getactive(char* title_out, size_t title_len);
 INPUTLIB_API int INPUTLIB_CALL window_setactive(const char* title);
+INPUTLIB_API int INPUTLIB_CALL window_getrect(const char* title, int* x, int* y, int* w, int* h);
 INPUTLIB_API int INPUTLIB_CALL window_maximize(const char* title);
 INPUTLIB_API int INPUTLIB_CALL window_minimize(const char* title);
 INPUTLIB_API int INPUTLIB_CALL window_close(const char* title);
