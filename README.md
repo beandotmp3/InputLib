@@ -68,6 +68,12 @@ key_hold("a", 1500);
 key_type("Hello, World!");
  ```
 
+ `key_isdown` checks if the given key is currently down. 1 indicates it is down, 0 inicates it is up, -1 indicates there was an error.
+
+ ```c
+key_isdown("a");
+ ```
+
 </details>
 
 <details>
@@ -104,16 +110,23 @@ cursor_movetor(-200, 400);
 <details>
  <summary>Window</summary>
 
- `window_getactive` retrieves the name of the current top window.
+ `window_getactive` retrieves the title of the current top window.
 
  ```c
 window_getactive(buf, sizeof(buf));
  ```
 
- `window_setactive` sets the window with the given name as the active window.
+ `window_setactive` sets the window with the given title as the active window.
 
  ```c
 window_setactive("title");
+ ```
+
+ `window_getrect` retrieves the dimensions and location of the window with the given title.
+
+ ```c
+int x, y, w, h;
+window_getrect("title", &x, &y, &w, &h);
  ```
 
  `window_maximize`, `window_minimize`, and `window_close` maximizes, minimizes, and closes the window with the given title.
