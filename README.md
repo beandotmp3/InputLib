@@ -44,16 +44,16 @@ key_press("a");
 key_pressn("a", 3);
  ```
 
- `key_pressmod` simulates a keypress with a modifier.
+ `key_pressm` simulates a keypress with a modifier.
 
  ```c
-key_pressmod("control", "x");
+key_pressm("control", "x");
  ```
 
- `key_pressmod2` simulates a keypress with 2 modifiers
+ `key_pressmt` simulates a keypress with 2 modifiers
 
  ```c
-key_pressmod2("control", "shift", "escape");
+key_pressmt("control", "shift", "escape");
  ```
 
  `key_hold` simulates holding the given key for a certain amount of milliseconds.
