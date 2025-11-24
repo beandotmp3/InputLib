@@ -117,3 +117,11 @@ int INPUTLIB_CALL key_type(const char* text) {
  }
  return 0;
 }
+int INPUTLIB_CALL key_isdown(const char* key) {
+ if(!key) return -1;
+ BYTE vk = find_vk(key);
+ if(!vk) return -1;
+ SHORT state = GetAsyncKeyState(vk);
+ if(state & 0x8000) return 1;
+ return 0;
+}
