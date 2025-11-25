@@ -45,6 +45,12 @@ int INPUTLIB_CALL window_getrect(const char* title, int* x, int* y, int* w, int*
  *h = r.bottom - r.top;
  return 0;
 }
+int INPUTLIB_CALL window_move(const char* title, int x, int y, int w, int h) {
+ HWND hwnd = find_by_title(title);
+ if(!hwnd) return 1;
+ if(!MoveWindow(hwnd, x, y, w, h, TRUE)) return 1;
+ return 0;
+}
 
 int INPUTLIB_CALL window_maximize(const char* title) {
  HWND hwnd = find_by_title(title);
@@ -64,3 +70,4 @@ int INPUTLIB_CALL window_close(const char* title) {
  if(!PostMessageA(hwnd, WM_CLOSE, 0, 0)) return 1;
  return 0;
 }
+
