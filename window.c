@@ -73,16 +73,6 @@ int INPUTLIB_CALL window_close(const char* title) {
  return 0;
 }
 
-typedef struct window_info_t {
- HWND hwnd;
- DWORD pid;
- DWORD tid;
- char title[260];
- char classname[256];
- char procname[260];
- char procpath[520];
- int valid;
-} window_info_t;
 int INPUTLIB_CALL window_info(HWND hwnd, window_info_t* out) {
  if(!out) return 1;
  memset(out, 0, sizeof(window_info_t));
@@ -116,7 +106,6 @@ int INPUTLIB_CALL window_info(HWND hwnd, window_info_t* out) {
  out->valid = 1;
  return 0;
 }
-
 typedef struct {
  char** arr;
  int capacity;
