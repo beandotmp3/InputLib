@@ -12,10 +12,23 @@
 #endif
 
 #include <stddef.h>
+#include <windows.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+typedef struct window_info_t {
+ HWND hwnd;
+ DWORD pid;
+ DWORD tid;
+ char title[260];
+ char classname[256];
+ char procname[260];
+ char procpath[520];
+ int valid;
+} window_info_t;
+
 
 
 INPUTLIB_API int INPUTLIB_CALL input_init(void);
@@ -46,6 +59,7 @@ INPUTLIB_API int INPUTLIB_CALL window_move(const char* title, int x, int y, int 
 INPUTLIB_API int INPUTLIB_CALL window_maximize(const char* title);
 INPUTLIB_API int INPUTLIB_CALL window_minimize(const char* title);
 INPUTLIB_API int INPUTLIB_CALL window_close(const char* title);
+INPUTLIB_API int INPUTLIB_CALL window_info(HWND hwnd, window_info_t* out);
 
 #ifdef __cplusplus
 }
