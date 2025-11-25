@@ -40,12 +40,15 @@ static BYTE find_vk(const char* key) {
 
 int INPUTLIB_CALL key_press(const char* key) {
  BYTE vk = find_vk(key);
- if(!vk) {
-  SetLastError(ERROR_INVALID_PARAMETER);
-  return 1;
- }
+ if(!vk) return 1;
  keybd_event(vk, 0, 0, 0);
  keybd_event(vk, 0, KEYEVENTF_KEYUP, 0);
+ return 0;
+}
+int INPUTLIB_CALL key_pressa(int vk) {
+ if(!vk) return 1;
+ keybd_event((BYTE)vk, 0, 0, 0);
+ keybd_event((BYTE)vk, 0, KEYEVENTF_KEYUP, 0);
  return 0;
 }
 int INPUTLIB_CALL key_pressn(const char* key, int amount) {

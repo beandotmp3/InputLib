@@ -23,6 +23,7 @@ INPUTLIB_API void INPUTLIB_CALL input_sleep(int ms);
 INPUTLIB_API void INPUTLIB_CALL input_gle(char* buffer, size_t len);
 
 INPUTLIB_API int INPUTLIB_CALL key_press(const char* key);
+INPUTLIB_API int INPUTLIB_CALL key_pressa(int vk);
 INPUTLIB_API int INPUTLIB_CALL key_pressn(const char* key, int amount);
 INPUTLIB_API int INPUTLIB_CALL key_pressm(const char* mod, const char* key);
 INPUTLIB_API int INPUTLIB_CALL key_pressmt(const char* mod1, const char* mod2, const char* key);
