@@ -60,6 +60,7 @@ INPUTLIB_API int INPUTLIB_CALL window_maximize(const char* title);
 INPUTLIB_API int INPUTLIB_CALL window_minimize(const char* title);
 INPUTLIB_API int INPUTLIB_CALL window_close(const char* title);
 INPUTLIB_API int INPUTLIB_CALL window_info(HWND hwnd, window_info_t* out);
+INPUTLIB_API int INPUTLIB_CALL window_list(char*** titles_out, int* count_out);
 
 #ifdef __cplusplus
 }
