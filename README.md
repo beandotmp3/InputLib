@@ -38,10 +38,16 @@ input_gle(buf, sizeof(buf));
 key_press("a");
  ```
 
+ `key_pressa` simulates a single keypress, using the raw vk code provided rather than retrieving one from the internal dictionary.
+
+ ```c
+key_pressa(0x42);
+ ```
+
  `key_pressn` simulates multiple keypresses of the same key.
 
  ```c
-key_pressn("a", 3);
+key_pressn("c", 3);
  ```
 
  `key_pressm` simulates a keypress with a modifier.
@@ -59,7 +65,7 @@ key_pressmt("control", "shift", "escape");
  `key_hold` simulates holding the given key for a certain amount of milliseconds.
 
  ```c
-key_hold("a", 1500);
+key_hold("d", 1500);
  ```
 
  `key_type` simulates typing the given string, case-sensitive.
@@ -129,7 +135,27 @@ int x, y, w, h;
 window_getrect("title", &x, &y, &w, &h);
  ```
 
+ `window_move` sets the dimensions and location of the window with the given title.
+
+ ```c
+window_move("title", 0, 0, 850, 400);
+ ```
+
  `window_maximize`, `window_minimize`, and `window_close` maximizes, minimizes, and closes the window with the given title.
+
+ `window_info` retrieves various pieces of information from the window with the provided HWND and puts them in a struct.
+
+ ```c
+window_info(hwnd, out WindowInfo info);
+ ```
+
+ `window_list` lists all currently open windows. Caller needs to manually free the strings and array on success.
+
+ ```c
+char** titles = NULL;
+int count = 0;
+window_list(&titles, &count);
+ ```
 
 </details>
 

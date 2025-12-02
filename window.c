@@ -1,5 +1,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <psapi.h>
+#pragma comment(lib, "Psapi.lib")
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -45,6 +47,12 @@ int INPUTLIB_CALL window_getrect(const char* title, int* x, int* y, int* w, int*
  *h = r.bottom - r.top;
  return 0;
 }
+int INPUTLIB_CALL window_move(const char* title, int x, int y, int w, int h) {
+ HWND hwnd = find_by_title(title);
+ if(!hwnd) return 1;
+ if(!MoveWindow(hwnd, x, y, w, h, TRUE)) return 1;
+ return 0;
+}
 
 int INPUTLIB_CALL window_maximize(const char* title) {
  HWND hwnd = find_by_title(title);
@@ -62,5 +70,80 @@ int INPUTLIB_CALL window_close(const char* title) {
  HWND hwnd = find_by_title(title);
  if(!hwnd) return 1;
  if(!PostMessageA(hwnd, WM_CLOSE, 0, 0)) return 1;
+ return 0;
+}
+
+int INPUTLIB_CALL window_info(HWND hwnd, window_info_t* out) {
+ if(!out) return 1;
+ memset(out, 0, sizeof(window_info_t));
+ out->hwnd = hwnd;
+ if(!hwnd || !IsWindow(hwnd)) {
+  out->valid = 0;
+  return 1;
+ }
+ DWORD pid = 0;
+ DWORD tid = GetWindowThreadProcessId(hwnd, &pid);
+ out->pid = pid;
+ out->tid = tid;
+ if(!GetWindowTextA(hwnd, out->title, sizeof(out->title))) out->title[0] = '\0';
+ if(!GetClassNameA(hwnd, out->classname, sizeof(out->classname))) out->classname[0] = '\0';
+ HANDLE hProc = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, pid);
+ if(hProc) {
+  if(!GetModuleFileNameExA(hProc, NULL, out->procpath, sizeof(out->procpath))) out->procpath[0] = '\0';
+  if(out->procpath[0]) {
+   const char* p = strrchr(out->procpath, '\\');
+   if(p) {
+    strncpy(out->procname, p + 1, sizeof(out->procname));
+   } else {
+    strncpy(out->procname, out->procpath, sizeof(out->procname));
+   }
+  } else out->procname[0] = '\0';
+  CloseHandle(hProc);
+ } else {
+  out->procpath[0] = '\0';
+  out->procname[0] = '\0';
+ }
+ out->valid = 1;
+ return 0;
+}
+typedef struct {
+ char** arr;
+ int capacity;
+ int count;
+} window_list_builder;
+static BOOL CALLBACK enum_windows_proc(HWND hwnd, LPARAM lparam) {
+ if(!IsWindowVisible(hwnd)) return TRUE;
+ char title[512];
+ if(GetWindowTextA(hwnd, title, sizeof(title)) == 0) return TRUE;
+ if(title[0] == '\0') return TRUE;
+ window_list_builder* b = (window_list_builder*)lparam;
+ if(b->count >= b->capacity) {
+  int newcap = b->capacity * 2;
+  if(newcap < 8) newcap = 8;
+  char** newarr = (char**)realloc(b->arr, newcap * sizeof(char*));
+  if(!newarr) return FALSE;
+  b->arr = newarr;
+  b->capacity = newcap;
+ }
+ size_t len = strlen(title);
+ char* t = (char*)malloc(len + 1);
+ if(!t) return FALSE;
+ strcpy(t, title);
+ b->arr[b->count++] = t;
+ return TRUE;
+}
+int INPUTLIB_CALL window_list(char*** titles_out, int* count_out) {
+ if(!titles_out || !count_out) return 1;
+ window_list_builder b = {0};
+ b.capacity = 0;
+ b.count = 0;
+ b.arr = NULL;
+ if(!EnumWindows(enum_windows_proc, (LPARAM)&b)) {
+  for(int i = 0; i < b.count; i++) free(b.arr[i]);
+  free(b.arr);
+  return 1;
+ }
+ *titles_out = b.arr;
+ *count_out = b.count;
  return 0;
 }
