@@ -32,6 +32,20 @@ extern "C" {
 #endif
 
 /*
+ * Structure containing detailed information about a keyboard event
+ */
+typedef struct Event {
+ int vk;                   /* Virtual key code */
+ int scan;                 /* Raw hardware scan code */
+ int pressed;              /* 1 if pressed, 0 if released */
+ int injected;             /* 1 if input was injected, 0 otherwise */
+ int modifiers;            /* Bitmask of active modifiers */
+ unsigned long time;       /* Milliseconds since library init */
+ unsigned long delta;      /* Milliseconds since last event */
+ unsigned long held;       /* Milliseconds key was held, valid on release */
+} Event;
+
+/*
  * Structure containing detailed information about a window
  */
 typedef struct window_info_t {
@@ -106,6 +120,52 @@ INPUTLIB_API int INPUTLIB_CALL cursor_movetos(int x, int y, int duration_ms);
 
 /* Move cursor relative to current position by (x, y) pixels */
 INPUTLIB_API int INPUTLIB_CALL cursor_movetor(int x, int y);
+
+/* ========== Listener Functions ========== */
+
+void listener_init(void);
+
+/* Start listener */
+INPUTLIB_API int INPUTLIB_CALL listener_start(void);
+
+/* Stop listener */
+INPUTLIB_API int INPUTLIB_CALL listener_stop(void);
+
+/* Flush listener-related variables */
+INPUTLIB_API int INPUTLIB_CALL listener_flush(void);
+
+/* Subscribe to keyboard event callbacks */
+INPUTLIB_API int INPUTLIB_CALL listener_cbsub(void (*cb)(Event* ev));
+
+/* Unsubscribe from keyboard event callbacks */
+INPUTLIB_API int INPUTLIB_CALL listener_ucbsub(void);
+
+/* Enable or disable polling mode */
+INPUTLIB_API int INPUTLIB_CALL listener_cbpollmode(int enabled);
+
+/* Poll next event in queue */
+INPUTLIB_API int INPUTLIB_CALL listener_cbpoll(Event* out);
+
+/* Dump poll queue to buffer */
+INPUTLIB_API int INPUTLIB_CALL listener_cbdumppoll(char* buffer, size_t len);
+
+/* Flush callback-related variables */
+INPUTLIB_API int INPUTLIB_CALL listener_cbflush(void);
+
+/* Block a key by name */
+INPUTLIB_API int INPUTLIB_CALL listener_block(const char* key);
+
+/* Unblock a key by name */
+INPUTLIB_API int INPUTLIB_CALL listener_ublock(const char* key);
+
+/* Check if a key is currently blocked */
+INPUTLIB_API int INPUTLIB_CALL listener_isblocked(const char* key);
+
+/* Check the current state of a key */
+INPUTLIB_API int INPUTLIB_CALL listener_keystate(const char* key);
+
+/* Check the current state of the modifier bitmask */
+INPUTLIB_API int INPUTLIB_CALL listener_modstate(int* out_mask);
 
 /* ========== Window Management Functions ========== */
 
