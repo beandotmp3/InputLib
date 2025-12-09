@@ -772,6 +772,40 @@ int INPUTLIB_CALL listener_ublock(const char* key) {
 }
 
 /*
+ * listener_blocka - Block key by virtual key code
+ * 
+ * @vk: Windows virtual key code
+ * 
+ * Blocks input from the given key.
+ * 
+ * Returns: 0 on success, 1 if vk code is invalid
+ */
+int INPUTLIB_CALL listener_blocka(int vk) {
+    if(!vk) { SetLastError(ERROR_INVALID_PARAMETER); return 1; }
+    EnterCriticalSection(&g_cs);
+    g_blocked_keys[vk] = 1;
+    LeaveCriticalSection(&g_cs);
+    return 0;
+}
+
+/*
+ * listener_ublocka - Unblock key by vitrual key code
+ * 
+ * @vk: Windows virtual key code
+ * 
+ * Unblock input from the given key.
+ * 
+ * Returns 0 on success, 1 if vk code is invalid
+ */
+int INPUTLIB_CALL listener_ublocka(int vk) {
+    if(!vk) { SetLastError(ERROR_INVALID_PARAMETER); return 1; }
+    EnterCriticalSection(&g_cs);
+    g_blocked_keys[vk] = 0;
+    LeaveCriticalSection(&g_cs);
+    return 0;
+}
+
+/*
  * listener_blockc - Block combo with 1 modifier
  * 
  * @mod: Name of modifier

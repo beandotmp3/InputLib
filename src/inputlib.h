@@ -158,6 +158,12 @@ INPUTLIB_API int INPUTLIB_CALL listener_block(const char* key);
 /* Unblock a key by name */
 INPUTLIB_API int INPUTLIB_CALL listener_ublock(const char* key);
 
+/* Block a key by vitrual key code */
+INPUTLIB_API int INPUTLIB_CALL listener_blocka(int vk);
+
+/* Unblock a key by virtual key code */
+INPUTLIB_API int INPUTLIB_CALL listener_ublocka(int vk);
+
 /* Block a combo with 1 modifier */
 INPUTLIB_API int INPUTLIB_CALL listener_blockc(const char* mod, const char* key);
 
