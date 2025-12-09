@@ -16,7 +16,7 @@
 /* Define event poll queue length */
 #define EVENT_QUEUE_CAPACITY 512
 
-/* Define modifier byte shifts */
+/* Define modifier bit shifts */
 #define L_MOD_SHIFT (1 << 0)
 #define L_MOD_CTRL (1 << 1)
 #define L_MOD_ALT (1 << 2)
@@ -101,7 +101,7 @@ typedef enum {
     GROUP_FUNCTION,
     GROUP_NAVIGATION,
     GROUP_MODIFIERS,
-    GROUP_NUMPAD, // reserved but not fully populated
+    GROUP_NUMPAD, /* reserved but not fully populated */
     GROUP_COUNT
 } GroupId;
 
@@ -224,7 +224,18 @@ static void q_clear(void) {
 }
 
 
-// add combo - caller must hold CS
+/*
+ * combo_add - Add combo to list
+ * 
+ * @mods: Array of modifier key codes
+ * @mod_count: Number of modifiers in the array
+ * @key: Primary key code of the combo
+ * 
+ * Create and populate a new ComboNode, then add it to the linked list of combos. 
+ * Caller must hold CS.
+ * 
+ * Returns: 1 on success, 0 if node is invalid
+ */
 static int combo_add(const BYTE* mods, int mod_count, BYTE key) { 
     ComboNode* node = (ComboNode*)malloc(sizeof(ComboNode));
     if(!node) return 0;
@@ -238,7 +249,19 @@ static int combo_add(const BYTE* mods, int mod_count, BYTE key) {
     return 1;
 }
 
-// remove combos that match (exact) - caller must hold CS
+/*
+ * combo_remove - Remove combo from list
+ * 
+ * @mods:
+ * @mod_count:
+ * @key:
+ * 
+ * Remove combo entry from list if it matches the one provided exactly. 
+ * Matches are unlinked from list and have thier memory freed. 
+ * Caller must hold CS.
+ * 
+ * Returns: Number of combos removed
+ */
 static int combo_remove(const BYTE* mods, int mod_count, BYTE key) {
     ComboNode* prev = NULL;
     ComboNode* cur = g_combo_head;
@@ -265,7 +288,14 @@ static int combo_remove(const BYTE* mods, int mod_count, BYTE key) {
     return removed;
 }
 
-// remove all combos - caller must hold CS
+/*
+ * combo_clear - Clear all combos from list
+ * 
+ * Frees every node's modifier array, followed by the node itself. After all 
+ * nodes are freed, the list head is set to NULL. Caller must hold CS.
+ * 
+ * Returns: nothing
+ */
 static void combo_clear(void) {
     ComboNode* cur = g_combo_head;
     while(cur) {
@@ -277,7 +307,17 @@ static void combo_clear(void) {
     g_combo_head = NULL;
 }
 
-// check whether current modifiers satisfy mods[]
+/*
+ * mods_down_match - Check if specified modifiers are pressed
+ * 
+ * @mods: Array of modifier key codes to check
+ * @mod_count: Number of modifiers in the array
+ * 
+ * Uses GetAsyncKeyState to test each modifer in the array. If any modifier is 
+ * not currently down, returns 0.
+ * 
+ * Returns: 1 if all modifiers are pressed, 0 otherwise
+ */
 static int mods_down_match(const BYTE* mods, int mod_count) {
     for(int i = 0; i < mod_count; ++i) {
         SHORT s = GetAsyncKeyState((int)mods[i]);
@@ -287,6 +327,18 @@ static int mods_down_match(const BYTE* mods, int mod_count) {
 }
 
 // check if any combo matches
+/*
+ * combo_matches_event - Check if a kehy event matches registered combo
+ * 
+ * @vk: Virtual key code of event to test
+ * 
+ * Searches combo linked list to check if any combo node matches the given key.
+ * A Match occurs if: 
+ * - The node's primary key equals vk, AND
+ * - The node has no modifiers OR all required modifiers are currently pressed.
+ * 
+ * Returns: 1 if a match is found, 0 otherwise
+ */
 static int combo_matches_event(BYTE vk) {
     ComboNode* cur = g_combo_head;
     while(cur) {
@@ -429,12 +481,15 @@ static DWORD WINAPI listener_thread_proc(LPVOID param) {
         if(g_init_event) SetEvent(g_init_event);
         return 1;
     }
+    
     if(g_init_event) SetEvent(g_init_event);
+    
     MSG msg;
     while(GetMessageA(&msg, NULL, 0, 0) > 0) {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
+
     if(g_hook) {
         UnhookWindowsHookEx(g_hook);
         g_hook = NULL;
@@ -459,6 +514,7 @@ int INPUTLIB_CALL listener_start(void) {
         return 1;
     }
 
+    /* Prepare init event for sync */
     g_init_event = CreateEventA(NULL, TRUE, FALSE, NULL);
     if(!g_init_event) {
         LeaveCriticalSection(&g_cs);
@@ -466,6 +522,7 @@ int INPUTLIB_CALL listener_start(void) {
         return 1;
     }
 
+    /* Create thread */
     g_thread = CreateThread(NULL, 0, listener_thread_proc, NULL, 0, &g_thread_id);
     if(!g_thread) {
         CloseHandle(g_init_event);
@@ -474,13 +531,15 @@ int INPUTLIB_CALL listener_start(void) {
         SetLastError(ERROR_OUTOFMEMORY);
         return 1;
     }
-
     LeaveCriticalSection(&g_cs);
 
+    /* Wait up to 3 seconds for hook install */
     DWORD wait = WaitForSingleObject(g_init_event, 3000);
     CloseHandle(g_init_event);
     g_init_event = NULL;
+
     if(wait != WAIT_OBJECT_0) {
+        /* Thread didn't initalize properly in time */
         PostThreadMessageA(g_thread_id, WM_QUIT, 0, 0);
         WaitForSingleObject(g_thread, 2000);
         CloseHandle(g_thread);
@@ -711,6 +770,51 @@ int INPUTLIB_CALL listener_ublock(const char* key) {
     LeaveCriticalSection(&g_cs);
     return 0;
 }
+
+/*
+ * listener_blockc - Block combo with 1 modifier
+ * 
+ * @mod: Name of modifier
+ * @key: Name of primary key
+ * 
+ * Blocks input from combo using combo_add.
+ * 
+ * Returns: 0 on success, 1 if key name not found
+ */
+int INPUTLIB_CALL listener_blockc(const char* mod, const char* key) {
+    if(!mod || !key) { SetLastError(ERROR_INVALID_PARAMETER); return 1; }
+    BYTE vm = find_vk(mod);
+    BYTE vk = find_vk(key);
+    if(!vm || !vk) { SetLastError(ERROR_INVALID_PARAMETER); return 1; }
+    EnterCriticalSection(&g_cs);
+    BYTE mods[1] = { vm };
+    int ok = combo_add(mods, 1, vk);
+    LeaveCriticalSection(&g_cs);
+    if(!ok) { SetLastError(ERROR_OUTOFMEMORY); return 1; }
+    return 0;
+}
+
+/*
+ * listener_ublockc - Unblocks combo with 1 modifier
+ * 
+ * @mod: Name of modifier
+ * @key: Name of primary key
+ * 
+ * Unblocks input from combo using combo_remove.
+ * 
+ * Returns: 0 on success, 1 if key name not found or removal failed
+ */
+int INPUTLIB_CALL listener_ublockc(const char* mod, const char* key) {
+    if(!mod || !key) { SetLastError(ERROR_INVALID_PARAMETER); return 1; }
+    BYTE vm = find_vk(mod);
+    BYTE vk = find_vk(key);
+    if(!vm || !vk) { SetLastError(ERROR_INVALID_PARAMETER); return 1; }
+    EnterCriticalSection(&g_cs);
+    int removed = combo_remove((BYTE*)&vm, 1, vk);
+    LeaveCriticalSection(&g_cs);
+    return removed ? 0 : 1;
+}
+
 
 /*
  * listener_isblocked - Check if a key is currently blocked
