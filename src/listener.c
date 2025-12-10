@@ -738,7 +738,8 @@ int INPUTLIB_CALL listener_cbflush(void) {
  * 
  * @key: Name of the key to block
  * 
- * Blocks all input from the given key.
+ * Blocks all input from the given key. Given the way that the blocking works, 
+ * blocking a key will also disable all combos using that key.
  * 
  * Returns: 0 on success, 1 if key name not found
  */
@@ -829,7 +830,7 @@ int INPUTLIB_CALL listener_blockc(const char* mod, const char* key) {
 }
 
 /*
- * listener_ublockc - Unblocks combo with 1 modifier
+ * listener_ublockc - Unblock combo with 1 modifier
  * 
  * @mod: Name of modifier
  * @key: Name of primary key
@@ -845,6 +846,55 @@ int INPUTLIB_CALL listener_ublockc(const char* mod, const char* key) {
     if(!vm || !vk) { SetLastError(ERROR_INVALID_PARAMETER); return 1; }
     EnterCriticalSection(&g_cs);
     int removed = combo_remove((BYTE*)&vm, 1, vk);
+    LeaveCriticalSection(&g_cs);
+    return removed ? 0 : 1;
+}
+
+/*
+ * listener_blockct - Block combo with 2 modifiers
+ * 
+ * @mod1: Name of first modifier
+ * @mod2: Name of second modifier
+ * @key: Name of primary key
+ * 
+ * Blocks input from combo using combo_add.
+ * 
+ * Returns: 0 on success, 1 if key name not found
+ */
+int INPUTLIB_CALL listener_blockct(const char* mod1, const char* mod2, const char* key) {
+    if(!mod1 || !mod2 || !key) { SetLastError(ERROR_INVALID_PARAMETER); return 1; }
+    BYTE m1 = find_vk(mod1);
+    BYTE m2 = find_vk(mod2);
+    BYTE vk = find_vk(key);
+    if(!m1 || !m2 || !vk) { SetLastError(ERROR_INVALID_PARAMETER); return 1; }
+    BYTE mods[2] = { m1, m2 };
+    EnterCriticalSection(&g_cs);
+    int ok = combo_add(mods, 2, vk);
+    LeaveCriticalSection(&g_cs);
+    if(!ok) { SetLastError(ERROR_OUTOFMEMORY); return 1; }
+    return 0;
+}
+
+/*
+ * listener_ublockct - Unblock combo with 2 modifiers
+ * 
+ * @mod1: Name of first modifier
+ * @mod2: Name of second modifier
+ * @key: Name of primary key
+ * 
+ * Unblocks input from combo using combo_remove.
+ * 
+ * Returns: 0 on success, 1 if key name not found or removal failed
+ */
+int INPUTLIB_CALL listener_ublockct(const char* mod1, const char* mod2, const char* key) {
+    if(!mod1 || !mod2 || !key) { SetLastError(ERROR_INVALID_PARAMETER); return 1; }
+    BYTE m1 = find_vk(mod1);
+    BYTE m2 = find_vk(mod2);
+    BYTE vk = find_vk(key);
+    if(!m1 || !m2 || !vk) { SetLastError(ERROR_INVALID_PARAMETER); return 1; }
+    BYTE mods[2] = { m1, m2 };
+    EnterCriticalSection(&g_cs);
+    int removed = combo_remove(mods, 2, vk);
     LeaveCriticalSection(&g_cs);
     return removed ? 0 : 1;
 }

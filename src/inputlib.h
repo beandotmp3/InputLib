@@ -170,6 +170,12 @@ INPUTLIB_API int INPUTLIB_CALL listener_blockc(const char* mod, const char* key)
 /* Unblock a combo with 1 modifier */
 INPUTLIB_API int INPUTLIB_CALL listener_ublockc(const char* mod, const char* key);
 
+/* Block a combo with 2 modifiers */
+INPUTLIB_API int INPUTLIB_CALL listener_blockct(const char* mod1, const char* mod2, const char* key);
+
+/* Unblock a combo with 2 modifiers */
+INPUTLIB_API int INPUTLIB_CALL listener_ublockct(const char* mod1, const char* mod2, const char* key);
+
 /* Check if a key is currently blocked */
 INPUTLIB_API int INPUTLIB_CALL listener_isblocked(const char* key);
 
