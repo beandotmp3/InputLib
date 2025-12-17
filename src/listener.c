@@ -252,9 +252,9 @@ static int combo_add(const BYTE* mods, int mod_count, BYTE key) {
 /*
  * combo_remove - Remove combo from list
  * 
- * @mods:
- * @mod_count:
- * @key:
+ * @mods: Array of modifier key codes
+ * @mod_count: Number of modifers in the array
+ * @key: Primary key code of the combo
  * 
  * Remove combo entry from list if it matches the one provided exactly. 
  * Matches are unlinked from list and have thier memory freed. 
@@ -896,6 +896,77 @@ int INPUTLIB_CALL listener_ublockct(const char* mod1, const char* mod2, const ch
     EnterCriticalSection(&g_cs);
     int removed = combo_remove(mods, 2, vk);
     LeaveCriticalSection(&g_cs);
+    return removed ? 0 : 1;
+}
+
+/*
+ * listener_blockca - Block combo with specified number of modifiers
+ * 
+ * @keys: Array of keys in combo
+ * @count: Number of items in the array
+ * 
+ * Blocks input from a combo using combo_add with the specified number of 
+ * modifiers. The order of items in keys should be the same as the other 
+ * blocking functions, in order of first to last pressed with the last 
+ * item being the primary key.
+ * 
+ * Returns: 0 on success, 1 if keys not found
+ */
+int INPUTLIB_CALL listener_blockca(const char** keys, int count) {
+    if(!keys || count <= 0) { SetLastError(ERROR_INVALID_PARAMETER); return 1; }
+    if(count == 1) return listener_block(keys[0]);
+
+    BYTE* mods = (BYTE*)malloc((size_t)(count - 1));
+    if(!mods) { SetLastError(ERROR_OUTOFMEMORY); return 1; }
+
+    for(int i = 0; i < count - 1; ++i) {
+        BYTE v = find_vk(keys[i]);
+        if(!v) { free(mods); SetLastError(ERROR_INVALID_PARAMETER); return 1; }
+        mods[i] = v;
+    }
+
+    BYTE vk = find_vk(keys[count - 1]);
+    if(!vk) { free(mods); SetLastError(ERROR_INVALID_PARAMETER); return 1; }
+    EnterCriticalSection(&g_cs);
+    int ok = combo_add(mods, count - 1, vk);
+    LeaveCriticalSection(&g_cs);
+    free(mods);
+    if(!ok) { SetLastError(ERROR_OUTOFMEMORY); return 1; }
+    return 0;
+}
+
+/*
+ * listener_ublockca - Unblock combo with specified number of modifiers
+ * 
+ * @keys: Array of keys in combo
+ * @count: Number of items in the array
+ * 
+ * Unblocks input from a combo using combo_remove with the specifier number of 
+ * modifiers. The order of items in keys should be the same as the other 
+ * blocking functions, in order of first to last pressed with the last 
+ * item being the primary key.
+ * 
+ * Returns: 0 on success, 1 if keys not found or removal failed
+ */
+int INPUTLIB_CALL listener_ublockca(const char** keys, int count) {
+    if(!keys || count <= 0) { SetLastError(ERROR_INVALID_PARAMETER); return 1; }
+    if(count == 1) return listener_ublock(keys[0]);
+
+    BYTE* mods = (BYTE*)malloc((size_t)(count - 1));
+    if(!mods) { SetLastError(ERROR_OUTOFMEMORY); return 1; }
+
+    for(int i = 0; i < count - 1; ++i) {
+        BYTE v = find_vk(keys[i]);
+        if(!v) { free(mods); SetLastError(ERROR_INVALID_PARAMETER); return 1; }
+        mods[i] = v;
+    }
+
+    BYTE vk = find_vk(keys[count - 1]);
+    if(!vk) { free(mods); SetLastError(ERROR_INVALID_PARAMETER); return 1; }
+    EnterCriticalSection(&g_cs);
+    int removed = combo_remove(mods, count - 1, vk);
+    LeaveCriticalSection(&g_cs);
+    free(mods);
     return removed ? 0 : 1;
 }
 
