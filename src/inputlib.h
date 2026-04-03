@@ -32,6 +32,20 @@ extern "C" {
 #endif
 
 /*
+ * Structure containing detailed information about a keyboard event
+ */
+typedef struct Event {
+ int vk;                   /* Virtual key code */
+ int scan;                 /* Raw hardware scan code */
+ int pressed;              /* 1 if pressed, 0 if released */
+ int injected;             /* 1 if input was injected, 0 otherwise */
+ int modifiers;            /* Bitmask of active modifiers */
+ unsigned long time;       /* Milliseconds since library init */
+ unsigned long delta;      /* Milliseconds since last event */
+ unsigned long held;       /* Milliseconds key was held, valid on release */
+} Event;
+
+/*
  * Structure containing detailed information about a window
  */
 typedef struct window_info_t {
@@ -106,6 +120,94 @@ INPUTLIB_API int INPUTLIB_CALL cursor_movetos(int x, int y, int duration_ms);
 
 /* Move cursor relative to current position by (x, y) pixels */
 INPUTLIB_API int INPUTLIB_CALL cursor_movetor(int x, int y);
+
+/* ========== Listener Functions ========== */
+
+void listener_init(void);
+
+/* Start listener */
+INPUTLIB_API int INPUTLIB_CALL listener_start(void);
+
+/* Stop listener */
+INPUTLIB_API int INPUTLIB_CALL listener_stop(void);
+
+/* Flush listener-related variables */
+INPUTLIB_API int INPUTLIB_CALL listener_flush(void);
+
+/* Subscribe to keyboard event callbacks */
+INPUTLIB_API int INPUTLIB_CALL listener_cbsub(void (*cb)(Event* ev));
+
+/* Unsubscribe from keyboard event callbacks */
+INPUTLIB_API int INPUTLIB_CALL listener_ucbsub(void);
+
+/* Enable or disable polling mode */
+INPUTLIB_API int INPUTLIB_CALL listener_cbpollmode(int enabled);
+
+/* Poll next event in queue */
+INPUTLIB_API int INPUTLIB_CALL listener_cbpoll(Event* out);
+
+/* Dump poll queue to buffer */
+INPUTLIB_API int INPUTLIB_CALL listener_cbdumppoll(char* buffer, size_t len);
+
+/* Flush callback-related variables */
+INPUTLIB_API int INPUTLIB_CALL listener_cbflush(void);
+
+/* Block a key by name */
+INPUTLIB_API int INPUTLIB_CALL listener_block(const char* key);
+
+/* Unblock a key by name */
+INPUTLIB_API int INPUTLIB_CALL listener_ublock(const char* key);
+
+/* Block a key by vitrual key code */
+INPUTLIB_API int INPUTLIB_CALL listener_blocka(int vk);
+
+/* Unblock a key by virtual key code */
+INPUTLIB_API int INPUTLIB_CALL listener_ublocka(int vk);
+
+/* Block a combo with 1 modifier */
+INPUTLIB_API int INPUTLIB_CALL listener_blockc(const char* mod, const char* key);
+
+/* Unblock a combo with 1 modifier */
+INPUTLIB_API int INPUTLIB_CALL listener_ublockc(const char* mod, const char* key);
+
+/* Block a combo with 2 modifiers */
+INPUTLIB_API int INPUTLIB_CALL listener_blockct(const char* mod1, const char* mod2, const char* key);
+
+/* Unblock a combo with 2 modifiers */
+INPUTLIB_API int INPUTLIB_CALL listener_ublockct(const char* mod1, const char* mod2, const char* key);
+
+/* Block a combo with specified number of keys */
+INPUTLIB_API int INPUTLIB_CALL listener_blockca(const char** keys, int count);
+
+/* Unblock a combo with specified number of keys */
+INPUTLIB_API int INPUTLIB_CALL listener_ublockca(const char** keys, int count);
+
+/* Check if a key is currently blocked */
+INPUTLIB_API int INPUTLIB_CALL listener_isblocked(const char* key);
+
+/* Check the current state of a key */
+INPUTLIB_API int INPUTLIB_CALL listener_keystate(const char* key);
+
+/* Check the current state of the modifier bitmask */
+INPUTLIB_API int INPUTLIB_CALL listener_modstate(int* out_mask);
+
+/* Set the state of the block_all toggle */
+INPUTLIB_API int INPUTLIB_CALL listener_blockall(int enabled);
+
+/* Set the state of the block_sim toggle */
+INPUTLIB_API int INPUTLIB_CALL listener_blocksim(int enabled);
+
+/* Set the state of the block_phys toggle */
+INPUTLIB_API int INPUTLIB_CALL listener_blockphys(int enabled);
+
+/* Query the state of the block_all toggle */
+INPUTLIB_API int INPUTLIB_CALL listener_isblockall(void);
+
+/* Query the state of the block_sim toggle */
+INPUTLIB_API int INPUTLIB_CALL listener_isblocksim(void);
+
+/* Query the state of the block_phys toggle */
+INPUTLIB_API int INPUTLIB_CALL listener_isblockphys(void);
 
 /* ========== Window Management Functions ========== */
 

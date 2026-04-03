@@ -35,6 +35,7 @@ int INPUTLIB_CALL input_init(void) {
 	 * on systems with multiple monitors at different DPI settings
 	 */
 	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+    listener_init();
 	return 0;
 }
 
