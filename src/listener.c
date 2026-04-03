@@ -1027,6 +1027,100 @@ int INPUTLIB_CALL listener_modstate(int* out_mask) {
 }
 
 /*
+ * listener_blockall - Block of all inputs setter
+ *
+ * @enabled: Desired state of the toggle
+ * 
+ * Sets the state of the block_all toggle. 1 enables, 0 disables.
+ * 
+ * Returns: 0 (always succeeds)
+ */
+int INPUTLIB_CALL listener_blockall(int enabled) {
+    EnterCriticalSection(&g_cs);
+    g_block_all = enabled ? 1 : 0;
+    LeaveCriticalSection(&g_cs);
+    return 0;
+}
+
+/*
+ * listener_blocksim - Block all simulated inputs setter
+ *
+ * @enabled: Desired state of the toggle
+ * 
+ * Sets the state of the block_sim toggle. Simulated input is defined by the
+ * presence of LLKHF_INJECTED and the injected flag from KBDLLHOOKSTRUCT.
+ * 1 enables, 0 disables.
+ * 
+ * Returns: 0 (always succeeds)
+ */
+int INPUTLIB_CALL listener_blocksim(int enabled) {
+    EnterCriticalSection(&g_cs);
+    g_block_sim = enabled ? 1 : 0;
+    LeaveCriticalSection(&g_cs);
+    return 0;
+}
+
+/*
+ * listener_blocksim - Block all physical inputs setter
+ *
+ * @enabled: Desired state of the toggle
+ *
+ * Sets the state of the block_phys toggle. Physical input is defined by the
+ * absence of LLKHF_INJECTED and the injected flag from KBDLLHOOKSTRUCT.
+ * 1 enables, 0 disables.
+ */
+int INPUTLIB_CALL listener_blockphys(int enabled) {
+    EnterCriticalSection(&g_cs);
+    g_block_phys = enabled ? 1 : 0;
+    LeaveCriticalSection(&g_cs);
+    return 0;
+}
+
+/*
+ * listener_isblockall - Block all inputs querier
+ *
+ * Queries the state of the block_all toggle.
+ * 
+ * Returns: 1 if enabled, 0 if disabled
+ */
+int INPUTLIB_CALL listener_isblockall(void) {
+    EnterCriticalSection(&g_cs);
+    int v = g_block_all;
+    LeaveCriticalSection(&g_cs);
+    return v;
+}
+
+/*
+ * listener_isblocksim - Block all simualted inputs querier
+ *
+ * Queries the state of the block_sim toggle.
+ * 
+ * Returns: 1 if enabled, 0 if disabled
+ */
+int INPUTLIB_CALL listener_isblocksim(void) {
+    EnterCriticalSection(&g_cs);
+    int v = g_block_sim;
+    LeaveCriticalSection(&g_cs);
+    return v;
+}
+
+/*
+ * listener_isblockphys - Block all physical inputs querier
+ *
+ * Queries the state of the block_phys toggle.
+ * 
+ * Returns: 1 if enabled, 0 if disabled
+ */
+int INPUTLIB_CALL listener_isblockphys(void) {
+    EnterCriticalSection(&g_cs);
+    int v = g_block_phys;
+    LeaveCriticalSection(&g_cs);
+    return v;
+}
+
+
+
+/*
  * listener_init - Initialize listener
  * 
  * Initalizes global state and critical section. Any subsequent calls after the 

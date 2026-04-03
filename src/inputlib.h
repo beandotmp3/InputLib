@@ -191,6 +191,24 @@ INPUTLIB_API int INPUTLIB_CALL listener_keystate(const char* key);
 /* Check the current state of the modifier bitmask */
 INPUTLIB_API int INPUTLIB_CALL listener_modstate(int* out_mask);
 
+/* Set the state of the block_all toggle */
+INPUTLIB_API int INPUTLIB_CALL listener_blockall(int enabled);
+
+/* Set the state of the block_sim toggle */
+INPUTLIB_API int INPUTLIB_CALL listener_blocksim(int enabled);
+
+/* Set the state of the block_phys toggle */
+INPUTLIB_API int INPUTLIB_CALL listener_blockphys(int enabled);
+
+/* Query the state of the block_all toggle */
+INPUTLIB_API int INPUTLIB_CALL listener_isblockall(void);
+
+/* Query the state of the block_sim toggle */
+INPUTLIB_API int INPUTLIB_CALL listener_isblocksim(void);
+
+/* Query the state of the block_phys toggle */
+INPUTLIB_API int INPUTLIB_CALL listener_isblockphys(void);
+
 /* ========== Window Management Functions ========== */
 
 /* Get the title of the currently active (foreground) window */
